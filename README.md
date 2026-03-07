@@ -32,7 +32,6 @@
    npm run build
    ```
 
-
 ## 🎨 color codes
 
 | Color          | Hex                                                                |

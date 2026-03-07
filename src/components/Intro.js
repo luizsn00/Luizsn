@@ -1,9 +1,9 @@
 import React from "react";
 
-import "../styles/Intro.css";
+import EmailRoundedIcon from "@material-ui/icons/EmailRounded";
 import Typist from "react-typist";
 import "react-typist/dist/Typist.css";
-import EmailRoundedIcon from "@material-ui/icons/EmailRounded";
+import "../styles/Intro.css";
 import FadeInSection from "./FadeInSection";
 import ParticlePortrait from "./ParticlePortrait";
 
@@ -32,7 +32,7 @@ class Intro extends React.Component {
           <Typist avgTypingDelay={120}>
             <span className="intro-title">
               {"hi, "}
-              <span className="intro-name">{"gazi"}</span>
+              <span className="intro-name">{"luiz"}</span>
               {" here."}
             </span>
           </Typist>

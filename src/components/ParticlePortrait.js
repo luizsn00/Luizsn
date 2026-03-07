@@ -1,9 +1,18 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+const BG_THRESHOLD = 80;
+
+function isBackground(r, g, b, bgR, bgG, bgB) {
+  const dr = r - bgR;
+  const dg = g - bgG;
+  const db = b - bgB;
+  return Math.sqrt(dr * dr + dg * dg + db * db) < BG_THRESHOLD;
+}
 
 const ParticlePortrait = () => {
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: -1000, y: -1000, active: false });
-  const linesRef = useRef([]);
+  const particlesRef = useRef([]);
   const imageLoadedRef = useRef(false);
   const startTimeRef = useRef(null);
   const [size, setSize] = useState(500);
@@ -11,7 +20,6 @@ const ParticlePortrait = () => {
   useEffect(() => {
     const updateSize = () => {
       const width = window.innerWidth;
-
       if (width <= 480) {
         setSize(Math.min(220, width - 40));
       } else if (width <= 768) {
@@ -20,7 +28,6 @@ const ParticlePortrait = () => {
         setSize(400);
       }
     };
-
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
@@ -48,12 +55,11 @@ const ParticlePortrait = () => {
       offscreen.width = canvasWidth;
       offscreen.height = canvasHeight;
 
-      const scale = 0.8;
+      const scale = 0.85;
       const imgAspect = img.width / img.height;
 
       let drawHeight = canvasHeight * scale;
       let drawWidth = drawHeight * imgAspect;
-
       if (drawWidth > canvasWidth * scale) {
         drawWidth = canvasWidth * scale;
         drawHeight = drawWidth / imgAspect;
@@ -62,88 +68,83 @@ const ParticlePortrait = () => {
       const offsetX = (canvasWidth - drawWidth) / 2;
       const offsetY = (canvasHeight - drawHeight) / 2;
 
+      offCtx.imageSmoothingEnabled = false;
       offCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
       const imageData = offCtx.getImageData(0, 0, canvasWidth, canvasHeight);
       const pixels = imageData.data;
 
-      const lines = [];
-      const rowGap = size <= 280 ? 5 : 6;
+      const bgI = 0;
+      const bgR = pixels[bgI];
+      const bgG = pixels[bgI + 1];
+      const bgB = pixels[bgI + 2];
 
-      for (let y = 0; y < canvasHeight; y += rowGap) {
-        let x = 0;
-        while (x < canvasWidth) {
+      const particles = [];
+      const gap = size <= 280 ? 3 : 4;
+
+      for (let y = 0; y < canvasHeight; y += gap) {
+        for (let x = 0; x < canvasWidth; x += gap) {
           const i = (y * canvasWidth + x) * 4;
-          const a = pixels[i + 3];
+          const r = pixels[i];
+          const g = pixels[i + 1];
+          const b = pixels[i + 2];
 
-          if (a > 128) {
-            const r = pixels[i];
-            const g = pixels[i + 1];
-            const b = pixels[i + 2];
-            const brightness = (r + g + b) / (3 * 255);
+          if (isBackground(r, g, b, bgR, bgG, bgB)) continue;
 
-            const lineLength = Math.floor(
-              3 + brightness * (size <= 280 ? 8 : 15)
-            );
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 200 + Math.random() * 200;
 
-            const scatterX = (Math.random() - 0.5) * 300;
-            const scatterY = (Math.random() - 0.5) * 300;
-
-            lines.push({
-              x: x + scatterX,
-              y: y + scatterY,
-              targetX: x,
-              targetY: y,
-              vx: 0,
-              vy: 0,
-              length: lineLength,
-              baseAlpha: 0.5 + brightness * 0.5,
-              currentAlpha: 0,
-              delay: Math.random() * 0.3,
-            });
-
-            x += lineLength + 3;
-          } else {
-            x += 4;
-          }
+          particles.push({
+            x: canvasWidth / 2 + Math.cos(angle) * dist,
+            y: canvasHeight / 2 + Math.sin(angle) * dist,
+            targetX: x,
+            targetY: y,
+            vx: 0,
+            vy: 0,
+            r,
+            g,
+            b,
+            size: gap,
+            baseAlpha: 0.85 + Math.random() * 0.15,
+            currentAlpha: 0,
+            delay: Math.random() * 0.6,
+          });
         }
       }
 
-      linesRef.current = lines;
+      particlesRef.current = particles;
       imageLoadedRef.current = true;
       startTimeRef.current = performance.now();
     };
 
     const draw = () => {
       animationId = requestAnimationFrame(draw);
-
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
       if (!imageLoadedRef.current) return;
 
-      const lines = linesRef.current;
+      const particles = particlesRef.current;
       const mouse = mouseRef.current;
       const elapsed = (performance.now() - startTimeRef.current) / 1000;
 
-      lines.forEach((p) => {
+      for (let idx = 0; idx < particles.length; idx++) {
+        const p = particles[idx];
         const particleTime = elapsed - p.delay;
+        if (particleTime < 0) continue;
 
-        if (particleTime < 0) return;
-
-        const fadeProgress = Math.min(particleTime / 1.5, 1);
+        const fadeProgress = Math.min(particleTime / 1.2, 1);
         const easedFade = 1 - Math.pow(1 - fadeProgress, 2);
         p.currentAlpha = p.baseAlpha * easedFade;
 
-        const moveProgress = Math.min(particleTime / 2.5, 1);
+        const moveProgress = Math.min(particleTime / 2.0, 1);
         const easedMove = 1 - Math.pow(1 - moveProgress, 3);
 
         if (mouse.active) {
           const dx = p.x - mouse.x;
           const dy = p.y - mouse.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const maxDist = 60;
-
+          const maxDist = 50;
           if (dist < maxDist && dist > 0) {
-            const force = (1 - dist / maxDist) * 2;
+            const force = (1 - dist / maxDist) * 3;
             p.vx += (dx / dist) * force;
             p.vy += (dy / dist) * force;
           }
@@ -151,24 +152,22 @@ const ParticlePortrait = () => {
 
         const dx = p.targetX - p.x;
         const dy = p.targetY - p.y;
-
-        const pullStrength = 0.01 + easedMove * 0.07;
+        const pullStrength = 0.02 + easedMove * 0.08;
         p.vx += dx * pullStrength;
         p.vy += dy * pullStrength;
-
-        p.vx *= 0.92;
-        p.vy *= 0.92;
-
+        p.vx *= 0.9;
+        p.vy *= 0.9;
         p.x += p.vx;
         p.y += p.vy;
 
-        ctx.strokeStyle = `rgba(100, 255, 218, ${p.currentAlpha})`;
-        ctx.lineWidth = size <= 280 ? 1.5 : 2;
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(p.x + p.length, p.y);
-        ctx.stroke();
-      });
+        ctx.fillStyle = `rgba(${p.r}, ${p.g}, ${p.b}, ${p.currentAlpha})`;
+        ctx.fillRect(
+          Math.round(p.x),
+          Math.round(p.y),
+          p.size,
+          p.size,
+        );
+      }
     };
 
     const handleMouseMove = (e) => {
