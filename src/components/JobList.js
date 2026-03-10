@@ -109,7 +109,7 @@ const JobList = () => {
       </Tabs>
       {companyKeys.map((key, i) => (
         <TabPanel value={value} index={i} key={key}>
-          <span className="joblist-job-title">{jobs[key].jobTitle}</span>
+          <span className="joblist-job-title">{jobs[key].jobTitle + " "}</span>
           <span className="joblist-job-company">
             {jobs[key].url ? (
               <a href={jobs[key].url} target="_blank" rel="noopener noreferrer">
