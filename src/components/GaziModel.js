@@ -29,11 +29,11 @@ class ThreeJSAnimation extends Component {
 
         // Init the renderer
         renderer = new THREE.WebGLRenderer({
-          alpha: true
+          alpha: true,
         });
         renderer.shadowMap.enabled = true;
         renderer.setSize(0.35 * window.innerWidth, 0.35 * window.innerHeight);
-        var container = document.getElementById("gazi-model");
+        var container = document.getElementById("luiz-model");
         container.appendChild(renderer.domElement);
 
         // Add a camera
@@ -41,7 +41,7 @@ class ThreeJSAnimation extends Component {
           65,
           window.innerWidth / window.innerHeight,
           0.1,
-          1000
+          1000,
         );
         camera.position.z = 30;
         camera.position.x = 0;
@@ -49,7 +49,7 @@ class ThreeJSAnimation extends Component {
 
         const stacy_mtl = new THREE.MeshPhongMaterial({
           color: 0xccd6f6,
-          skinning: true
+          skinning: true,
         });
 
         var loader = new GLTFLoader();
@@ -61,7 +61,7 @@ class ThreeJSAnimation extends Component {
             model = gltf.scene;
             let fileAnimations = gltf.animations;
 
-            model.traverse(o => {
+            model.traverse((o) => {
               if (o.isMesh) {
                 o.castShadow = true;
                 o.receiveShadow = true;
@@ -84,7 +84,7 @@ class ThreeJSAnimation extends Component {
             mixer = new THREE.AnimationMixer(model);
             let idleAnim = THREE.AnimationClip.findByName(
               fileAnimations,
-              "idle"
+              "idle",
             );
             idleAnim.tracks.splice(3, 3);
             idleAnim.tracks.splice(9, 3);
@@ -94,7 +94,7 @@ class ThreeJSAnimation extends Component {
           undefined, // We don't need this function
           function (error) {
             console.error(error);
-          }
+          },
         );
 
         // Add lights
@@ -121,7 +121,7 @@ class ThreeJSAnimation extends Component {
         let floorGeometry = new THREE.PlaneGeometry(5000, 5000, 1, 1);
         let floorMaterial = new THREE.MeshPhongMaterial({
           color: 0x0a192f,
-          shininess: 0
+          shininess: 0,
         });
 
         let floor = new THREE.Mesh(floorGeometry, floorMaterial);
@@ -132,7 +132,7 @@ class ThreeJSAnimation extends Component {
 
         let geometry = new THREE.SphereGeometry(16, 46, 46);
         let material = new THREE.MeshBasicMaterial({
-          color: 0x64ffda
+          color: 0x64ffda,
         });
         let sphere = new THREE.Mesh(geometry, material);
         sphere.position.z = -30;
@@ -180,7 +180,7 @@ class ThreeJSAnimation extends Component {
       function getMousePos(e) {
         return {
           x: e.clientX,
-          y: e.clientY
+          y: e.clientY,
         };
       }
 
@@ -200,7 +200,7 @@ class ThreeJSAnimation extends Component {
 
         let w = {
           x: window.innerWidth,
-          y: window.innerHeight
+          y: window.innerHeight,
         };
 
         // Left (Rotates neck left between 0 and -degreeLimit)
@@ -236,13 +236,13 @@ class ThreeJSAnimation extends Component {
         }
         return {
           x: dx,
-          y: dy
+          y: dy,
         };
       }
     })();
   }
   render() {
-    return <div ref={ref => (this.mount = ref)} />;
+    return <div ref={(ref) => (this.mount = ref)} />;
   }
 }
 export default ThreeJSAnimation;

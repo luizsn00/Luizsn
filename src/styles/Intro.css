@@ -27,7 +27,7 @@
 .Typist {
   color: var(--lightest-slate);
   text-align: left;
-  font-size: 64px;
+  font-size: 56px;
 }
 
 .Typist .Cursor--blinking {
@@ -36,43 +36,47 @@
 }
 
 .intro-title {
-  font-family: "NTR", sans-serif;
-  font-size: 64px;
+  font-family: "Inter", sans-serif;
+  font-size: 56px;
+  letter-spacing: -0.02em;
 }
 
 .intro-name {
-  font-family: "NTR", sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--green-bright);
   font-weight: bold;
-  font-size: 64px;
+  font-size: 56px;
+  letter-spacing: -0.02em;
 }
 
 .intro-subtitle {
-  font-family: "NTR", sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--slate);
   text-align: left;
   font-weight: 300;
-  font-size: 48px;
+  font-size: 40px;
+  letter-spacing: -0.01em;
 }
 
 .intro-desc {
   color: var(--slate);
-  font-family: "NTR", sans-serif;
-  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
   text-align: left;
   max-width: 100%;
   padding-top: 8px;
   padding-bottom: 40px;
   line-height: 1.5;
+  letter-spacing: -0.01em;
 }
 
 .intro-contact {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bolder;
-  font-family: "NTR", sans-serif;
+  font-family: "Inter", sans-serif;
   padding: 12px 32px;
   cursor: pointer;
   border: 1px solid var(--green-bright);
@@ -92,19 +96,19 @@
 
   .intro-title,
   .intro-name {
-    font-size: 64px;
+    font-size: 56px;
   }
 
   .Typist {
-    font-size: 58px;
+    font-size: 50px;
   }
 
   .intro-subtitle {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   .intro-desc {
-    font-size: 20px;
+    font-size: 16px;
   }
 }
 
@@ -133,17 +137,17 @@
 
   .Typist {
     text-align: center;
-    font-size: 42px;
+    font-size: 36px;
   }
 
   .intro-title,
   .intro-name {
-    font-size: 48px;
+    font-size: 42px;
   }
 
   .intro-subtitle {
     text-align: center;
-    font-size: 28px;
+    font-size: 24px;
     display: none;
   }
 
@@ -169,16 +173,16 @@
   }
 
   .Typist {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .intro-title,
   .intro-name {
-    font-size: 32px;
+    font-size: 28px;
   }
 
   .intro-subtitle {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .intro-desc {

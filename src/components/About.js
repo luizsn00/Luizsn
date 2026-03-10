@@ -1,79 +1,87 @@
 import React from "react";
+import { useLanguage } from "../i18n/LanguageContext";
 import "../styles/About.css";
 import FadeInSection from "./FadeInSection";
 
-class About extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      expanded: true,
-      activeKey: "1",
-    };
-    this.handleSelect = this.handleSelect.bind(this);
-  }
-  handleSelect(eventKey) {
-    this.setState({
-      activeKey: eventKey,
-    });
-  }
-  render() {
-    const one = (
-      <p>
-        I am currently a <b>Software Engineer</b> at
-        <a href="https://www.ads.google.com/"> Google</a>, where I help build
-        autobidder models that make Google Search money. Previously, I was at
-        <a href="https://www.aboutamazon.com/"> Amazon</a> and{" "}
-        <a href="https://newsroom.pinterest.com/company/"> Pinterest.</a> At the
-        same time, I am undertaking a part-time <b> Master's of Science</b> in{" "}
-        <b>Software Engineering </b>at{" "}
-        <a href="https://www.ox.ac.uk/about">University of Oxford</a>.
-      </p>
-    );
-    const two = (
-      <p>
-        Outside of work, I’m nerdy about tech gadgets, love literary fiction,
-        and play way too many battle royale games. Oh, I make content too.
-      </p>
-    );
+const About = () => {
+  const { t } = useLanguage();
 
-    const tech_stack = [
-      "Python",
-      "Typescript",
-      "React.js",
-      "Java",
-      "Javascript ES6+",
-      "C#",
-    ];
+  const tech_stack = ["Typescript", "React.js", "React Native", "Swift", "Java", "Javascript ES6+"];
 
-    return (
-      <div id="about">
-        <FadeInSection>
-          <div className="section-header ">
-            <span className="section-title">/ about me</span>
+  const bio = (
+    <p>
+      {t("about.bioPrefix")}
+      <b>{t("about.bioRole")}</b>
+      {t("about.bioAt")}
+      <a
+        href="https://superlogica.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {t("about.bioSuperlogica")}
+      </a>
+      {t("about.bioSuperlogicaSuffix")}
+      <a
+        href="https://play.google.com/store/apps/details?id=app.gruvi&hl=pt_BR"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {t("about.bioGruvi")}
+      </a>
+      {" ("}
+      <a
+        href="https://play.google.com/store/apps/details?id=app.gruvi&hl=pt_BR"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Play Store
+      </a>
+      {", "}
+      <a
+        href="https://apps.apple.com/br/app/gruvi/id1561610983"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        App Store
+      </a>
+      {")"}
+      {t("about.bioGruviSuffix")}
+      {t("about.bioAnd")}
+      {t("about.bioMasters")}
+      {t("about.bioIn")}
+    </p>
+  );
+
+  const hobbies = <p>{t("about.hobbies")}</p>;
+
+  return (
+    <div id="about">
+      <FadeInSection>
+        <div className="section-header ">
+          <span className="section-title">{t("about.title")}</span>
+        </div>
+        <div className="about-content">
+          <div className="about-description">
+            {bio}
+            {t("about.techIntro")}
+            <ul className="tech-stack">
+              {tech_stack.map(function (tech_item, i) {
+                return (
+                  <FadeInSection delay={`${i + 1}00ms`} key={i}>
+                    <li>{tech_item}</li>
+                  </FadeInSection>
+                );
+              })}
+            </ul>
+            {hobbies}
           </div>
-          <div className="about-content">
-            <div className="about-description">
-              {[one]}
-              {"Here are some technologies I have been working with:"}
-              <ul className="tech-stack">
-                {tech_stack.map(function (tech_item, i) {
-                  return (
-                    <FadeInSection delay={`${i + 1}00ms`}>
-                      <li>{tech_item}</li>
-                    </FadeInSection>
-                  );
-                })}
-              </ul>
-              {[two]}
-            </div>
-            <div className="about-image">
-              <img alt="Gazi Jarin" src={"/assets/me2.jpg"} />
-            </div>
+          <div className="about-image">
+            <img alt={t("about.imgAlt")} src={"/assets/me.jpeg"} />
           </div>
-        </FadeInSection>
-      </div>
-    );
-  }
-}
+        </div>
+      </FadeInSection>
+    </div>
+  );
+};
 
 export default About;

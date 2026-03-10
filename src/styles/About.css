@@ -14,7 +14,7 @@
 .about-description li {
   position: relative;
   padding-left: 20px;
-  font-size: 18px;
+  font-size: 16px;
   color: var(--slate);
 }
 
@@ -31,17 +31,18 @@
 }
 
 .about-description {
-  font-family: "NTR", sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--slate);
   max-width: 600px;
-  font-size: 22px;
-  text-align: justify;
+  font-size: 18px;
+  text-align: left;
+  letter-spacing: -0.01em;
   margin: 0;
 }
 
 .about-description a,
 .about-description b {
-  font-size: 21px;
+  font-size: 17px;
   font-weight: bold;
 }
 
@@ -76,13 +77,13 @@
   }
 
   .about-description {
-    font-size: 18px;
-    text-align: justify;
+    font-size: 16px;
+    text-align: left;
   }
 
   .about-description a,
   .about-description b {
-    font-size: 17px;
+    font-size: 15px;
   }
 
   .about-image img {

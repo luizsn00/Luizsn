@@ -33,7 +33,7 @@ html {
 }
 
 .App {
-  font-family: "NTR";
+  font-family: "Inter", sans-serif;
   background-color: var(--navy);
   display: flex;
   margin: auto;
@@ -93,10 +93,11 @@ a {
 }
 
 .section-title {
-  font-family: "NTR", sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--lightest-slate);
-  font-size: 46px;
+  font-size: 40px;
   font-weight: bold;
+  letter-spacing: -0.02em;
 }
 
 @media only screen and (max-width: 600px) {
@@ -119,6 +120,6 @@ a {
   }
 
   .section-title {
-    font-size: 32px;
+    font-size: 28px;
   }
 }

@@ -1,10 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import { makeStyles } from "@material-ui/core/styles";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
+import React from "react";
+import { useLanguage } from "../i18n/LanguageContext";
 import FadeInSection from "./FadeInSection";
 
 const isHorizontal = window.innerWidth < 600;
@@ -80,74 +81,10 @@ const useStyles = makeStyles((theme) => ({
 const JobList = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const { t } = useLanguage();
 
-  const experienceItems = {
-    Google: {
-      jobTitle: "Software Engineer @",
-      duration: "JAN 2025 - PRESENT",
-      desc: [
-        "Built and launched large-scale machine learning-driven conversion autobidding models at Google scale, influencing bidding decisions across millions of advertisers and users",
-        "Led end-to-end model development (data, training, evaluation, and production launch) for Proxybidder ML systems, directly driving multi-million-dollar revenue impact through improved conversion efficiency",
-      ],
-    },
-    Pinterest: {
-      jobTitle: "Software Engineer II @",
-      duration: "JUL 2022 - JAN 2025",
-      desc: [
-        "Led the development of a generative AI solution using LLMs for advanced prompt engineering, improving SEO and ad relevance, and resulting in a 20% increase in click-through rates, ad revenue and business visibility",
-        "Designed and developed an intuitive user interface for a prompt management system for 500K+ users, with key focus on accessibility, real-time collaboration features, and dynamic data visualization",
-      ],
-    },
-    Amazon: {
-      jobTitle: "Software Development Engineer II @",
-      duration: "JUL 2022 - MAY 2024",
-      desc: [
-        "Led development of end-to-end region build automation across Route 53 (AWS's DNS web service).  This enabled the launch of customer-facing global services in new regions within a day, a significant reduction from the previous time-frame of a month.",
-        "Re-built Route 53's core domain management and DNS systems to provide a better user experience to millions of customers.",
-      ],
-    },
-    Wattpad: {
-      jobTitle: "Software Engineer Intern @",
-      duration: "MAY 2020 - APR 2021",
-      desc: [
-        "Developed a responsive React web page (the new Story Details) from scratch, both on client and server side, for an app with massive scale (2 billion daily requests).",
-        "Iteratively built web experiences for 80 million users across high-traffic pages.",
-        "Collaborated with senior engineers and product management following best practices for the full software development life cycle, including coding standards, code reviews, source control management, build processes, testing, and operations.",
-      ],
-    },
-    // "University of Toronto": {
-    //   jobTitle: "Research Engineer @",
-    //   duration: "MAY 2021 - SEPT 2021",
-    //   desc: [
-    //     "Developed and researched an NLP-based framework using state-of-the-art tools like Spacy and Stanza to facilitate the derivation of requirements from health data by leveraging syntactic dependencies, entity-recognition and rule-based match-making.",
-    //     " Application selected for DCS Research Award ($4,000) as part of the ”Visualizing Privacy Analysis Results” project led by Professor Marsha Chechik."
-    //   ]
-    // },
-    // Centivizer: {
-    //   jobTitle: "Software Developer @",
-    //   duration: "SEPT 2019 - APR 2020",
-    //   desc: [
-    //     "Developed interactive and neural-activation technologies to stimulate physical and cognitive functions in order to slow the progression of neurodegenerative disorders.",
-    //     "Leveraged WebRTC to develop and maintain a Node.js online video-streaming platform in real-time competitive-mode games to research the effects of active stimulation for those suffering from dementia."
-    //   ]
-    // },
-    // TDSB: {
-    //   jobTitle: "Software Engineer @",
-    //   duration: "SEPT 2019 - DEC 2020",
-    //   desc: [
-    //     "Co-developed homework management software integrable with Google Classroom by utilizing the Python’s Flask micro-framework for the back-end API and Vue.js for the front-end UI, in order to translate business requirements into a functional full-stack application."
-    //   ]
-    // },
-    // "Orange Gate": {
-    //   jobTitle: "Software Developer Intern @",
-    //   duration: "MAY 2019 - AUG 2019",
-    //   desc: [
-    //     "Developed a Node.js smart home system through Facebook’s Messenger integrated with Bocco sensors and other smart devices (Nest camera, TPLink smart plugs) to derive conclusions about the current state of the home",
-    //     "Identified continuous improvements in data quality, design reports and coding activities, presenting results and findings to internal business stakeholders.",
-    //     "Relevant technologies/tools used: DialogFlow, Vision, AutoML, Messenger Bot API, MongoDB."
-    //   ]
-    // }
-  };
+  const jobs = t("jobs");
+  const companyKeys = Object.keys(jobs);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -162,24 +99,32 @@ const JobList = () => {
         onChange={handleChange}
         className={classes.tabs}
       >
-        {Object.keys(experienceItems).map((key, i) => (
-          <Tab label={isHorizontal ? `0${i}.` : key} {...a11yProps(i)} />
+        {companyKeys.map((key, i) => (
+          <Tab
+            label={isHorizontal ? `0${i}.` : key}
+            {...a11yProps(i)}
+            key={key}
+          />
         ))}
       </Tabs>
-      {Object.keys(experienceItems).map((key, i) => (
-        <TabPanel value={value} index={i}>
-          <span className="joblist-job-title">
-            {experienceItems[key]["jobTitle"] + " "}
+      {companyKeys.map((key, i) => (
+        <TabPanel value={value} index={i} key={key}>
+          <span className="joblist-job-title">{jobs[key].jobTitle}</span>
+          <span className="joblist-job-company">
+            {jobs[key].url ? (
+              <a href={jobs[key].url} target="_blank" rel="noopener noreferrer">
+                {jobs[key].companyName || key}
+              </a>
+            ) : (
+              jobs[key].companyName || key
+            )}
           </span>
-          <span className="joblist-job-company">{key}</span>
-          <div className="joblist-duration">
-            {experienceItems[key]["duration"]}
-          </div>
+          <div className="joblist-duration">{jobs[key].duration}</div>
           <ul className="job-description">
-            {experienceItems[key]["desc"].map(function (descItem, i) {
+            {jobs[key].desc.map(function (descItem, j) {
               return (
-                <FadeInSection delay={`${i + 1}00ms`}>
-                  <li key={i}>{descItem}</li>
+                <FadeInSection delay={`${j + 1}00ms`} key={j}>
+                  <li>{descItem}</li>
                 </FadeInSection>
               );
             })}

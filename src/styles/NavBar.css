@@ -1,7 +1,7 @@
 .navbar {
     background-color: var(--navy);
     color: var(--lightest-slate);
-    font-family: 'NTR';
+    font-family: 'Inter', sans-serif;
     font-weight: bold;
   }
 
@@ -15,6 +15,37 @@
 
   .navbar-light .navbar-nav .nav-link:hover {
     color: var(--green-bright) !important;
+  }
+
+  .language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 12px;
+  }
+
+  .lang-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 2px;
+    opacity: 0.35;
+    filter: grayscale(0.6);
+    transform: scale(0.9);
+    transition: opacity 0.3s, filter 0.3s, transform 0.3s;
+  }
+
+  .lang-btn:hover {
+    opacity: 0.7;
+    filter: grayscale(0.2);
+  }
+
+  .lang-btn.active {
+    opacity: 1;
+    filter: grayscale(0);
+    transform: scale(1);
   }
 
   @media only screen and (max-width: 600px) {

@@ -1,11 +1,11 @@
+import EmailRoundedIcon from "@material-ui/icons/EmailRounded";
+import GitHubIcon from "@material-ui/icons/GitHub";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import React from "react";
 import { Sidenav } from "rsuite";
-import EmailRoundedIcon from "@material-ui/icons/EmailRounded";
-import LinkedInIcon from "@material-ui/icons/LinkedIn";
-import GitHubIcon from "@material-ui/icons/GitHub";
 
-import "../styles/SidebarNav.css";
 import "react-typist/dist/Typist.css";
+import "../styles/SidebarNav.css";
 import FadeInSection from "./FadeInSection";
 
 const isMobile = window.innerWidth < 600;
@@ -15,13 +15,13 @@ class SidebarNav extends React.Component {
     super();
     this.state = {
       expanded: true,
-      activeKey: "1"
+      activeKey: "1",
     };
     this.handleSelect = this.handleSelect.bind(this);
   }
   handleSelect(eventKey) {
     this.setState({
-      activeKey: eventKey
+      activeKey: eventKey,
     });
   }
   render() {
@@ -31,7 +31,7 @@ class SidebarNav extends React.Component {
       <a href="#intro">/home</a>,
       <a href="#about">/about</a>,
       <a href="#experience">/experience</a>,
-      <a href="#projects">/software-creations</a>
+      <a href="#projects">/software-creations</a>,
     ];
 
     return (
@@ -56,13 +56,13 @@ class SidebarNav extends React.Component {
           </Sidenav>
         )}
         <div className="sidebar-logos" href="/">
-          <a href="mailto:gazijarin@gmail.com">
+          <a href="mailto:leavemehere00dat@gmail.com">
             <EmailRoundedIcon style={{ fontSize: 20 }}></EmailRoundedIcon>
           </a>
-          <a href="https://github.com/gazijarin">
+          <a href="https://github.com/luizsn00">
             <GitHubIcon style={{ fontSize: 19 }}></GitHubIcon>
           </a>
-          <a href="https://www.linkedin.com/in/gazi-jarin-3644b0172/">
+          <a href="https://www.linkedin.com/in/luiz-nunes-6a8b091a3/">
             <LinkedInIcon style={{ fontSize: 21 }}></LinkedInIcon>
           </a>
         </div>

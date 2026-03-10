@@ -6,10 +6,13 @@ import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { BrowserRouter } from "react-router-dom";
+import { LanguageProvider } from "./i18n/LanguageContext";
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <LanguageProvider>
+      <App />
+    </LanguageProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );
