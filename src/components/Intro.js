@@ -9,7 +9,7 @@ import FadeInSection from "./FadeInSection";
 import ParticlePortrait from "./ParticlePortrait";
 
 const Intro = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   return (
     <div id="intro">
@@ -17,7 +17,7 @@ const Intro = () => {
         <ParticlePortrait />
       </div>
       <div className="intro-block">
-        <Typist avgTypingDelay={120}>
+        <Typist key={lang} avgTypingDelay={120}>
           <span className="intro-title">
             {t("intro.greeting")}
             <span className="intro-name">{t("intro.name")}</span>
